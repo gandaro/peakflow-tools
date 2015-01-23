@@ -17,10 +17,6 @@ ARBORWS = 'https://%s/arborws'
 class PeakflowAPI(object):
     def __init__(self, host, username=None, password=None, api_key=None, tms_ip=None):
         soap_url = 'https://%s/soap/sp' % host
-        # wsdl_url = 'file://%s' % pkg_resources.resource_filename(
-        #         pkg_resources.Requirement.parse('peakflow-tools'),
-        #         'PeakflowSP.wsdl'
-        # )
         wsdl_url = 'file://%s' % pkg_resources.resource_filename(__name__, 'PeakflowSP.wsdl')
 
         if username is None or password is None:
