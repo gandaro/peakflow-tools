@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf-8
 import argparse
 import os
 import sys
@@ -12,22 +13,23 @@ def main():
     parser.add_argument('username', help='username for downloading .pcap')
     parser.add_argument('password', help='password for downloading .pcap')
     parser.add_argument('apikey', help='Web API key')
-    # /arborws/admin/tms
     parser.add_argument('tmsip', help='TMS IP address')
     args = parser.parse_args()
 
     api = PeakflowAPI(args.host, args.username, args.password, args.apikey, args.tmsip)
     r = api.post('/mitigations/status', filter='ongoing')
 
-    for m in r.json():
-        if 'alert_id' not in m.keys():
+    for mitigation in r.json():
+        # some mitigations don't have alert_ids
+        if 'alert_id' not in mitigation.keys():
             continue
-        alert = int(m['alert_id'])
+        alert = int(mitigation['alert_id'])
         path = os.path.join(args.pcapdir, '%d.pcap' % alert)
+        # only download pcap if we don't have one already
         if os.path.exists(path):
             continue
         try:
-            api.download_pcap(int(m['id']), path)
+            api.download_pcap(int(mitigation['id']), path)
         except Exception as e:
             print >>sys.stderr, 'failed downloading %d.pcap: ' % alert, e
 
