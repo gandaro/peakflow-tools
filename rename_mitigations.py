@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import logging
 import re
 import sys
 
@@ -7,13 +8,18 @@ from peakflow_misc import PeakflowAPI
 
 RENAME_COMMAND = 'services sp mitigation tms rename "%s" "%s"'
 
+logging.basicConfig(filename='/var/log/rename-mitigations.log',
+                    format='%(asctime) %(levelname)s: %(message)s')
+
 def rename_mitigation(api, old_name, new_name):
     sanitize = lambda s: s.replace('"', '').replace('\\', '\\\\')
     old_name = sanitize(old_name)
     new_name = sanitize(new_name)
 
     cmd = RENAME_COMMAND % (old_name, new_name)
+    logging.info('renaming "%s" to "%s"', old_name, new_name)
     return api.cli_run(cmd)
+
 
 def main():
     parser = argparse.ArgumentParser(description='rename auto-mitigations')
@@ -22,7 +28,7 @@ def main():
     parser.add_argument('password')
     parser.add_argument('api_key')
     parser.add_argument('--limit', '-n', type=int,
-            help='limit of queried mitigations', default=10)
+                        help='limit of queried mitigations', default=10)
     args = parser.parse_args()
 
     api = PeakflowAPI(args.host, args.username, args.password, args.api_key)
@@ -32,8 +38,8 @@ def main():
         limit=args.limit
     )
     for mitigation in r.json():
-        if 'alert_id' not in mitigation.keys() or \
-                'managed_object_name' not in mitigation.keys():
+        if ('alert_id' not in mitigation.keys() or
+                'managed_object_name' not in mitigation.keys()):
             continue
 
         old_name = mitigation['name']
