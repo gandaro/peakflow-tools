@@ -1,7 +1,6 @@
-import argparse
+# coding: utf-8
+
 import base64
-import os
-import re
 import sys
 import urllib2
 
@@ -15,9 +14,12 @@ from suds.transport.https import HttpAuthenticated
 ARBORWS = 'https://%s/arborws'
 
 class PeakflowAPI(object):
-    def __init__(self, host, username=None, password=None, api_key=None, tms_ip=None):
+    def __init__(self, host, username=None, password=None, api_key=None,
+                 tms_ip=None):
         soap_url = 'https://%s/soap/sp' % host
-        wsdl_url = 'file://%s' % pkg_resources.resource_filename(__name__, 'PeakflowSP.wsdl')
+        wsdl_url = 'file://%s' % pkg_resources.resource_filename(
+            __name__, 'PeakflowSP.wsdl'
+        )
 
         if username is None or password is None:
             self.client = None
@@ -36,10 +38,9 @@ class PeakflowAPI(object):
         self._timeout = 10
 
     def cli_run(self, command):
-        """ Run a command
-        """
         command = base64.b64encode(command)
-        result = self.client.service.cliRun(command=command, timeout=self._timeout)
+        result = self.client.service.cliRun(command=command,
+                                            timeout=self._timeout)
         return base64.b64decode(result)
 
     def download_pcap(self, mitigation_id, filename):
@@ -60,4 +61,5 @@ class PeakflowAPI(object):
         }
         data.update(parameters)
         # XXX: SSL certificate should be checked
-        return requests.post(ARBORWS % self.host + url, verify=False, data=data)
+        return requests.post(ARBORWS % self.host + url, verify=False,
+                             data=data)
