@@ -9,7 +9,7 @@ from pfpcap import PeakflowBrowser
 from suds.client import Client
 from suds.transport.https import HttpAuthenticated
 
-ARBORWS = 'https://{}/arborws'
+ARBORWS = 'https://{}/arborws/{}'
 
 class PeakflowAPI(object):
     """Python interface to several Arbor APIs.
@@ -122,5 +122,5 @@ class PeakflowAPI(object):
         }
         data.update(parameters)
         # XXX: SSL certificate should be checked
-        return requests.post(ARBORWS.format(self.host + url), verify=False,
+        return requests.post(ARBORWS.format(self.host, url), verify=False,
                              data=data)
