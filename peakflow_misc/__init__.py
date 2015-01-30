@@ -55,7 +55,18 @@ class PeakflowAPI(object):
         self.api_key = api_key
         self.tms_ip = tms_ip
 
+        if self.username is not None and self.password is not None:
+            self.pb = PeakflowBrowser(self.host, self.username, self.password)
+        else:
+            self.pb = None
+
         self._timeout = 10
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self._logout()
 
     def cli_run(self, command):
         """Run a command on the Arbor CLI.
@@ -91,14 +102,13 @@ class PeakflowAPI(object):
         """
         if self.username is None or self.password is None:
             raise RunTimeError('credentials for pcap downloading are missing')
-        pb = PeakflowBrowser(self.host, self.username, self.password)
-        try:
-            pb.start_flowcapture(mitigation_id, self.tms_ip)
-            while not pb.is_flowcapture_finished(mitigation_id, self.tms_ip):
-                time.sleep(0.5)
-            return pb.download_pcap(mitigation_id, self.tms_ip, filename)
-        finally:
-            pb.logout()
+        self.pb.start_flowcapture(mitigation_id, self.tms_ip)
+        while not self.pb.is_flowcapture_finished(mitigation_id, self.tms_ip):
+            time.sleep(0.5)
+        return self.pb.download_pcap(mitigation_id, self.tms_ip, filename)
+
+    def _logout(self):
+        self.pb.logout()
 
     def post(self, url, **parameters):
         """Send an HTTP POST request to the Arbor Web Services API.

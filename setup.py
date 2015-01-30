@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='peakflow-tools',
-    version='0.1',
+    version='0.2',
     include_package_data=True,
     scripts=['pcap_autodl.py', 'rename_mitigations.py'],
     packages=['peakflow_misc'],
