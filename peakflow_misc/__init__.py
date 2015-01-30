@@ -1,5 +1,6 @@
 import base64
 import sys
+import time
 import urllib2
 
 import pkg_resources
@@ -92,12 +93,10 @@ class PeakflowAPI(object):
             raise RunTimeError('credentials for pcap downloading are missing')
         pb = PeakflowBrowser(self.host, self.username, self.password)
         try:
-            if not pb.start_flowcapture(mitigation_id, self.tms_ip):
-                print >>sys.stderr, "error: Unable to start flow capture"
+            pb.start_flowcapture(mitigation_id, self.tms_ip)
             while not pb.is_flowcapture_finished(mitigation_id, self.tms_ip):
-                print "Flow capture not done...."
-            print "Flow capture complete, downloading pcap..."
-            pb.download_pcap(mitigation_id, self.tms_ip, filename)
+                time.sleep(0.5)
+            return pb.download_pcap(mitigation_id, self.tms_ip, filename)
         finally:
             pb.logout()
 
