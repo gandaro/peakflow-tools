@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Copyright (c) 2015 Jakob Kramer
+
 import argparse
 import re
 import sys

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-# coding: utf-8
+# Copyright (c) 2015 Jakob Kramer
+
 import argparse
 import os
 import sys

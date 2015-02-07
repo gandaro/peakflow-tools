@@ -1,3 +1,6 @@
+# Copyright (c) 2014 Kristian Larsson
+# Copyright (c) 2015 Jakob Kramer
+
 import argparse
 import base64
 import os
