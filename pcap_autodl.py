@@ -17,7 +17,8 @@ def main():
     parser.add_argument('tmsip', help='TMS IP address')
     args = parser.parse_args()
 
-    api = PeakflowAPI(args.host, args.username, args.password, args.apikey, args.tmsip)
+    api = PeakflowAPI(args.host, args.username, args.password, args.apikey,
+                      args.tmsip)
     r = api.post('/mitigations/status', filter='ongoing')
 
     for mitigation in r.json():
@@ -25,14 +26,14 @@ def main():
         if 'alert_id' not in mitigation.keys():
             continue
         alert = int(mitigation['alert_id'])
-        path = os.path.join(args.pcapdir, '%d.pcap' % alert)
+        path = os.path.join(args.pcapdir, '{}.pcap'.format(alert))
         # only download pcap if we don't have one already
         if os.path.exists(path):
             continue
         try:
             api.download_pcap(int(mitigation['id']), path)
         except Exception as e:
-            print >>sys.stderr, 'failed downloading %d.pcap: ' % alert, e
+            print >>sys.stderr, 'failed downloading {}.pcap:'.format(alert), e
 
 if __name__ == '__main__':
     main()
