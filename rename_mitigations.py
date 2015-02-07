@@ -1,5 +1,14 @@
 #!/usr/bin/env python
-# Copyright (c) 2015 Jakob Kramer
+"""
+    rename_mitigations.py
+    ~~~~~~~~~~~~~~
+
+    Script that automatically renames mitigations from "Alert 123
+    Auto-Mitigation" to "<MANAGED_OBJECT> (123)".
+
+    :copyright: (c) 2015 by Jakob Kramer.
+    :license: MIT, see LICENSE for more details.
+"""
 
 import argparse
 import logging

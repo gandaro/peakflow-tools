@@ -1,5 +1,15 @@
 #!/usr/bin/env python
-# Copyright (c) 2015 Jakob Kramer
+"""
+    pcap-autodl.py
+    ~~~~~~~~~~~~~~
+
+    Script that lets you download fresh .pcap files for the newest 10
+    or so ongoing mitigations.  The script will not download a new file
+    if there is one for that mitigation already.
+
+    :copyright: (c) 2015 by Jakob Kramer.
+    :license: MIT, see LICENSE for more details.
+"""
 
 import argparse
 import os

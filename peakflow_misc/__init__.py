@@ -1,5 +1,12 @@
-# Copyright (c) 2014 Kristian Larsson
-# Copyright (c) 2015 Jakob Kramer
+"""
+    peakflow_misc
+    ~~~~~~~~~~~~~
+
+    Provides a class for easy programmatic access to Peakflow.
+
+    :copyright: (c) 2015 by the developers
+    :license: MIT, see LICENSE for more details.
+"""
 
 import base64
 import sys
