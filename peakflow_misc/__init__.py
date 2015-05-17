@@ -9,7 +9,6 @@
 """
 
 import base64
-import sys
 import time
 import urllib2
 
@@ -81,7 +80,7 @@ class PeakflowAPI(object):
             'OK'
         """
         if self.client is None:
-            raise RunTimeError('credentials for SOAP API are missing')
+            raise RuntimeError('credentials for SOAP API are missing')
         command = base64.b64encode(command)
         result = self.client.service.cliRun(command=command,
                                             timeout=self._timeout)
@@ -100,7 +99,7 @@ class PeakflowAPI(object):
             >>> api.download_pcap(1234, 'foo.pcap')
         """
         if self.username is None or self.password is None:
-            raise RunTimeError('credentials for pcap downloading are missing')
+            raise RuntimeError('credentials for pcap downloading are missing')
         pb = PeakflowBrowser(self.host, self.username, self.password)
         try:
             pb.start_flowcapture(mitigation_id, self.tms_ip)
@@ -125,7 +124,7 @@ class PeakflowAPI(object):
             >>> api.post('/mitigations/status', filter='ongoing', limit=10)
         """
         if self.api_key is None:
-            raise RunTimeError('API key is missing')
+            raise RuntimeError('API key is missing')
         data = {
             'api_key': self.api_key
         }
